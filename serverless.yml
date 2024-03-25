@@ -2,23 +2,23 @@ service: example-serverless-layer
 
 frameworkVersion: '3'
 
-provider:
-  name: aws
-  runtime: python3.12
-  stage: ${self:custom.stage}
-  region: ap-northeast-2
-  deploymentBucket:
-    name: ${ssm:/${self:custom.project-name}-${self:custom.stage}-serverless-bucket}
-    blockPublicAccess: true
-
 plugins:
     - serverless-python-requirements
     - serverless-plugin-scripts
 
+provider:
+  name: aws
+  runtime: python3.12
+  stage: ${self:custom.stage}
+  region: ${self:custom.region}
+  deploymentBucket:
+    name: ${ssm:/${self:custom.project-name}-${self:custom.stage}-serverless-bucket}
+    blockPublicAccess: true
+
 custom:
   project-name: example
-  stage: ${opt:stage, self:provider.stage}
-  region: ap-northeast-2
+  stage: ${opt:stage, 'dev'}
+  region: ${opt:region, 'ap-northeast-2'}
   pythonRequirements:
     dockerizePip: true
     layer:
@@ -29,7 +29,7 @@ custom:
 
 package:
   patterns:
-      - '!node_modules/**'
-#      - '!venv/**'
+    - '!node_modules/**'
+    - '!venv/**'
 
 
