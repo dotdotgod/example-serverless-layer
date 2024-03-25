@@ -8,11 +8,12 @@ provider:
   stage: ${self:custom.stage}
   region: ap-northeast-2
   deploymentBucket:
-    name: ${ssm:/${self:custom.example}-${self:custom.stage}-serverless-bucket}
+    name: ${ssm:/${self:custom.project-name}-${self:custom.stage}-serverless-bucket}
     blockPublicAccess: true
 
 plugins:
     - serverless-python-requirements
+    - serverless-plugin-scripts
 
 custom:
   project-name: example
@@ -22,8 +23,13 @@ custom:
     dockerizePip: true
     layer:
       name: ${self:custom.project-name}-dependency-layers
+  scripts:
+    hooks:
+      'deploy:finalize': ./scripts/deploy-finalize.sh ${self:custom.pythonRequirements.layer.name}
 
 package:
   patterns:
       - '!node_modules/**'
 #      - '!venv/**'
+
+

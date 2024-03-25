@@ -10,6 +10,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "serverless-plugin-scripts": "^1.0.2",
     "serverless-python-requirements": "^6.0.1"
   }
 }
