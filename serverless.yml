@@ -1,0 +1,28 @@
+service: example-serverless-layer
+
+frameworkVersion: '3'
+
+provider:
+  name: aws
+  runtime: python3.12
+  stage: ${self:custom.stage}
+  region: ap-northeast-2
+  deploymentBucket:
+    name: ${ssm:/${self:custom.example}-${self:custom.stage}-serverless-bucket}
+    blockPublicAccess: true
+
+plugins:
+    - serverless-python-requirements
+
+custom:
+  project-name: example
+  stage: ${opt:stage, self:provider.stage}
+  region: ap-northeast-2
+  pythonRequirements:
+    dockerizePip: true
+    layer:
+      name: ${self:custom.project-name}-dependency-layers
+
+package:
+  patterns:
+      - '!node_modules/**'
