@@ -8,7 +8,7 @@ plugins:
 
 provider:
   name: aws
-  runtime: python3.12
+  runtime: python3.11
   stage: ${self:custom.stage}
   region: ${self:custom.region}
   deploymentBucket:
