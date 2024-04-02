@@ -31,5 +31,3 @@ package:
   patterns:
     - '!node_modules/**'
     - '!venv/**'
-
-
